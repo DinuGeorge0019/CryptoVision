@@ -1,0 +1,141 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+.container
+{
+    width: 100%;
+    height: 100vh;
+    background: url(/static/assets/images/blockchain.png);
+    background-size: contain;
+    background-position: calc(100% + 180px) center;
+    background-repeat: no-repeat;
+}
+
+.left
+{
+    width: 50%;
+    height: 100vh;
+    background-color: rgba(13, 13, 13, 1);
+}
+
+.left form
+{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 60vh;
+    height: 80vh;
+    border-radius: 20px;
+    background-color: rgba(217, 217, 217, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.top_left
+{
+    left: 40px;
+    border-radius: 50px;
+    width: 40px;
+    background-color: beige;
+    height: 40px;
+    position: absolute;
+    top: 50px;
+    background: url(/static/assets/images/leftarr.png);
+    background-position: center;
+    background-size: contain;
+}
+
+.title
+{
+    margin-top:10%;
+    width: 50vh;
+    height: 40px;
+    background-color: rgba(217, 217, 217, 1);
+    display: flex;
+    border-radius: 50px;
+    border: 2px solid rgba(13, 13, 13, 1);
+   
+}
+
+.tleft
+{
+    background-color: rgba(13, 13, 13, 1);
+    color: rgba(217, 217, 217, 1);
+    border-radius: 50px;
+}
+.trit
+{
+    width: 25vh;
+    padding-top: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgba(13, 13, 13, 1);
+    
+}
+.title button
+{
+    width: 25vh;
+    height: 40px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.rightbtn
+{
+    width:50vh ;
+    margin-top: 5%;
+}
+.rightbtn img
+{
+    float: right;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+.signupbtn
+{
+    float: right;
+    background-color: rgba(13, 13, 13, 1);
+    width:25vh;
+    border-radius: 50px;
+    
+}
+.al
+{
+    float: left;
+    width: 50vh;
+    text-decoration: none;
+    color: rgba(13, 13, 13, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input
+{
+    width: 50vh;
+    height: 40px;
+    border: none;
+    border-bottom:2px solid rgba(13, 13, 13, 1);
+    background-color: rgba(217, 217, 217, 1);
+}
+#signbtn
+{
+    width: 14vh;
+    float: right;
+    margin-right: 10px;
+    background-color: rgba(13, 13, 13, 1);
+    color: rgba(217, 217, 217, 1);
+    border: none;
+    font-size: 1.2rem;
+}

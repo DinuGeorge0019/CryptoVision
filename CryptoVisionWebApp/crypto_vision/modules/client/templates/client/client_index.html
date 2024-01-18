@@ -1,0 +1,393 @@
+{% extends 'client/client_base.html' %}
+
+{% block title %} CryptoVision Client Page {% endblock %}
+
+{% block topbar %} 
+    <div class="top">
+        <div class="top_title">
+            <div class="stat card" data-category="stat">
+                <h1>Statistics</h1>
+            </div>
+            <div class="blockchain card" data-category="blockchain">
+                <h1>BlockChain</h1>
+            </div>
+            <div class="data card" data-category="data">
+                <h1>History</h1>
+            </div>
+            <div class="machine_learning card" data-category="machine_learning">
+                <h1>CryptoML</h1>
+            </div>
+            <div class="settings card" data-category="settings">
+                <h1>Settings</h1>
+            </div>
+        </div>
+        <div class="top_right">
+            <div class="profile">
+                <img src="data:image/png;base64,{{ user_data.encoded_profile_picture }}" alt="Profile Picture">
+                <div class="name">
+                    {{ user_data.username }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block leftbar %} 
+    <div class="left">
+        <div class="left_title">
+            <img src="/static/assets/images/cryptovision_logo.png" alt="">
+            <div class="title">CryptoVision</div>
+        </div>
+    
+        <div class="left_contain">
+            <button class="menu_1 tab" data-category="stat">
+                <img src="/static/assets/images/client_logos/statistics_logo.png" alt="">
+                <h1>Statistics</h1>
+            </button>
+            <button class="menu_2 tab" data-category="blockchain">
+                <img src="/static/assets/images/client_logos/wallet_logo.png" alt="">
+                <h1>BlockChain</h1>
+            </button>
+            <button class="menu_3 tab" data-category="data">
+                <img src="/static/assets/images/client_logos/history_logo.png" alt="">
+                <h1>History</h1>
+            </button>
+            <button class="menu_4 tab" data-category="machine_learning">
+                <img src="/static/assets/images/client_logos/ml_white_logo.png" alt="">
+                <h1>CryptoML</h1>
+            </button>
+            <div class="menu_5 tab" data-category="settings">
+                <img src="/static/assets/images/client_logos/settings.png" alt="">
+                <h1>Settings</h1>
+            </div>
+            <div class="menu_6">
+                <img src="/static/assets/images/leftarr.png" alt="">
+                <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Logout</a>
+                <form id="logoutForm" method="post" action="{% url 'logout' %}" style="display: none;">
+                {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="stat card" data-category="stat">
+        <div class="mid">
+            <div class="mid_top">
+                {% for crypto in crypto_data %}
+                <div class="coin_box {% if forloop.first %}selected{% endif %}">
+                    <div class="coin">
+                        <h1>{{ crypto.symbol }}</h1>
+                    </div>
+                    <div class="value">
+                        <h2>A: {{ crypto.average_price }} $</h2>
+                        <h2>C: {{ crypto.current_price }} $</h2>            
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mid_mid">
+
+                <div class="mid_mid_left">
+                    <div class="mid_mid_left_square">
+                        {% for ticker in crypto_24hr_ticker %}
+                        <div id="{{ ticker.symbol }}_table">
+                            <table id="dataset_view">
+                                <thead>
+                                    <tr>
+                                        <th>Crypto</th>
+                                        <th>{{ticker.symbol}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Last Price</th>
+                                        <td>{{ticker.lastPrice}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Price Change</th>
+                                        <td>{{ticker.priceChange}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Price Change %</th>
+                                        <td>{{ticker.priceChangePercent}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Previous Close</th>
+                                        <td>{{ticker.prevClosePrice}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Open Price</th>
+                                        <td>{{ticker.openPrice}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>High</th>
+                                        <td>{{ticker.highPrice}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Low</th>
+                                        <td>{{ticker.lowPrice}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mid_mid_right">
+                    {% for symbol in symbols %}
+                        <div class="crypto_his_plot" id="{{ symbol }}_his_plot"></div>
+                    {% endfor %}
+                    <div id="crypto_his_data" style="display: none;">{{ crypto_his_data|safe }}</div>   
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="blockchain card" data-category="blockchain">
+
+        <div class="mid">
+
+            <h2 style="margin-bottom: 10px; margin-left: 10px;">BlockChain Statistics</h2>
+
+            <div class="mid_top">
+                <div class="transaction_count_plot" id="transaction_count_plot"></div>
+                <div id="transaction_count_data" style="display: none;">{{ transaction_count_data|safe }}</div>   
+            </div>
+            <div class="container-row">
+                <div class="container" id="top_left">
+                    <div class="active_miners_plot" id="active_miners_plot"></div>
+                    <div id="active_miners_and_value_data" style="display: none;">{{ active_miners_and_value_data|safe }}</div> 
+                </div>
+                <div class="container" id="top_right">
+                    <div class="mined_value_plot" id="mined_value_plot"></div>
+                    <div id="active_miners_and_value_data" style="display: none;">{{ active_miners_and_value_data|safe }}</div> 
+                </div>
+            </div>
+            <div class="container-row">
+                <div class="container" id="bot_left">
+                    <div class="mined_blocks_plot" id="mined_blocks_plot"></div>
+                    <div id="mined_blocks_and_value_data" style="display: none;">{{ mined_blocks_and_value_data|safe }}</div> 
+                </div>
+                <div class="container" id="bot_right">
+                    <div class="mined_value_by_block_plot" id="mined_value_by_block_plot"></div>
+                    <div id="mined_blocks_and_value_data" style="display: none;">{{ mined_blocks_and_value_data|safe }}</div> 
+                </div>
+            </div>
+
+            <h2 style="margin-bottom: 10px; margin-left: 10px;">Top Crypto Coins</h2>
+
+            <div class="block_chain_mid_mid">
+                <table id="dataset_view">
+                    <thead>
+                        <tr>
+                            <th>Crypto</th>
+                            <th>Price</th>
+                            <th>Change %</th>
+                            <th>24h Volume</th>
+                            <th>Market Cap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in top_tokens %}
+                        <tr>
+                            <th>{{ token.symbol }}</th>
+                            <td>{{ token.lastPrice }}</td>
+                            <td>{{ token.priceChangePercent }}</td>
+                            <td>{{ token.volume }}</td>
+                            <td>{{ token.quoteVolume }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 style="margin-top: 30px; margin-bottom: 10px; margin-left: 10px;">Latest BlockChain News</h2>
+
+            <div class="mid_bot">
+                <table id="dataset_view">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for article in blockchain_news %}
+                        <tr>
+                            <th>{{ article.title }}</th>
+                            <td><a href="{{ article.link }}" style="color: white;">{{ article.link }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="data card" data-category="data">
+        <div class="mid">
+            <table id="dataset_view">
+                <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>Time Stamp</th>
+                        <th>Fee Value</th>
+                        <th>Input Count</th>
+                        <th>Input Value (BTC)</th>
+                        <th>Input Value (USD)</th>
+                        <th>Output Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in bitcoin_latest_transactions %}
+                        <tr>
+                            <td>{{ transaction.hash }}</td>
+                            <td>{{ transaction.block.timestamp.time }}</td>
+                            <td>{{ transaction.feeValue }}</td>
+                            <td>{{ transaction.inputCount }}</td>
+                            <td>{{ transaction.inputValueInBTC }}</td>
+                            <td>{{ transaction.inputValue }}</td>
+                            <td>{{ transaction.outputCount }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="machine_learning card" data-category="machine_learning">
+        <div class="mid">
+            <div class="mid_top">
+                <div class="crypto_predictions_plot" id="crypto_predictions_plot"></div>
+                <div id="crypto_predictions_result" style="display: none;">{{ crypto_predictions_result |safe }}</div>   
+            </div>
+            <div class="container-row">
+                <div class="container" id="top_left">
+                    <div class="profit-calculator">
+                        <h2 style="margin-bottom: 10px;">Profit calculator</h2>
+
+                        <table id="dataset_view">
+                            <tbody>
+                                <tr>
+                                    <th>When to Buy</th>
+                                    <td>{{profit_calculator_advices.when_to_buy_date.0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Minimum Price</th>
+                                    <td>{{profit_calculator_advices.minimum_price.0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>When to Sell</th>
+                                    <td>{{profit_calculator_advices.when_to_sell.0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Maximum Price</th>
+                                    <td>{{profit_calculator_advices.maximum_price.0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Possible Profit</th>
+                                    <td>{{profit_calculator_advices.possible_profit.0}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Possible Loss</th>
+                                    <td>{{profit_calculator_advices.possible_loss.0}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="container" id="top_right">
+                    <div class="gpt-crypto-adviser">
+                        <h2 style="margin-bottom: 10px;">GptCryptoAdviser</h2>
+                        <div class="gpt-crypto-adviser-message">
+                            <p>{{ gpt_crypto_advice }}</p>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-row">
+                <div class="container" id="bot_left">
+
+                </div>
+                <div class="container" id="bot_right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings card" data-category="settings">
+    <div class="mid">
+        <div class="left-side">
+            <div class="left-top-side">
+                <form class="user-form" action="{% url 'save_user_data' %}" method="post">
+                    
+                    {% csrf_token %}
+
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" value="{{ user_data.username }}"><br>
+                    {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                    {% endif %}
+                    
+                    <label for="email">Email:</label><br>
+                    <input type="text" id="email" name="email" value="{{ user_data.email }}"><br>
+                    {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                    {% endif %}
+                    
+                    <label for="wallet_security_stamp">Wallet:</label><br>
+                    <input type="text" id="wallet_security_stamp" name="wallet_security_stamp" value="{{ user_data.wallet_security_stamp }}"><br>
+                    {% if form.wallet_security_stamp.errors %}
+                    <div class="error">{{ form.wallet_security_stamp.errors }}</div>
+                    {% endif %}
+
+                    <!-- Add more fields as needed -->
+                    <input type="submit" value="Save User Data">
+
+                </form>
+            </div>
+            <div class="left-bottom-side">
+                <form class="password-form" action="{% url 'change_user_password' %}" method="post">
+
+                    {% csrf_token %}
+
+                    <label for="new_password">New Password:</label><br>
+                    <input type="password" id="new_password" name="new_password"><br>
+                    {% if form.new_password.errors %}
+                    <div class="error">{{ form.new_password.errors }}</div>
+                    {% endif %}
+
+                    <label for="confirm_new_password">Confirm New Password:</label><br>
+                    <input type="password" id="confirm_new_password" name="confirm_new_password"><br>
+                    {% if form.confirm_new_password.errors %}
+                    <div class="error">{{ form.confirm_new_password.errors }}</div>
+                    {% endif %}
+
+                    <!-- Add more fields as needed -->
+                    <input type="submit" value="Change Password" >
+                </form>
+            </div>
+        </div>
+        <div class="right-side">
+            <img src="data:image/png;base64,{{ user_data.encoded_profile_picture }}" alt="Profile Picture">
+            <form id="change-profile-picture-form" action="{% url 'change_profile_picture' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input id="profile_picture_file" name="profile_picture_file" type="file" accept="image/*">   
+                <button type="submit" id="change-profile-picture">Change Profile Picture</button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    
+{% endblock %}
+

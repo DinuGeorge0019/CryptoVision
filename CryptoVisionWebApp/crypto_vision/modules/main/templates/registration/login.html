@@ -1,0 +1,43 @@
+{% extends 'registration/auth_base.html' %}
+
+{% block title %} CryptoVision Sign In Page {% endblock %}
+
+{% block content %}
+
+<div class="left">
+    <form action="{% url 'login' %}" method="post">
+    
+        {% csrf_token %}
+
+        <a href="/home">
+            <div class="top_left">
+            </div>
+        </a>
+
+        <div class="title">
+           <button class="tleft">Login</button>
+           <a href="/register" class="trit">Register</a>
+        </div>
+
+        <input type="text" placeholder="Username" name="username" id="username">
+        {% if form.username.errors %}
+            <div class="error">{{ form.username.errors }}</div>
+        {% endif %}
+
+        <input type="password" placeholder="Password" name="password" id="password">
+        {% if form.password.errors %}
+            <div class="error">{{ form.password.errors }}</div>
+        {% endif %}
+
+        <div class="rightbtn">
+            <div class="signupbtn">
+                <img src="/static/assets/images/arrow.png" alt="">
+                <input id="signbtn" type="submit" value="Login">
+            </div>
+        </div>
+    
+    </form>
+</div>
+
+{%endblock%}
+

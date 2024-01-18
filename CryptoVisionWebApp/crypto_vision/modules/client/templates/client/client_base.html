@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}CryptoVision{% endblock %}</title>
+        <link rel="stylesheet" href="/static/css/client_styles.css?{% now " U" %}" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="/static/js/tab_selection.js"></script>
+        <script src="/static/js/coin_box_selection.js"></script>
+        <script src="/static/js/crypto_history_data_candle_plot.js"></script>
+        <script src="/static/js/transaction_count_data_bar_plot.js"></script>        
+        <script src="/static/js/active_miners_data_bar_plot.js"></script>
+        <script src="/static/js/mined_value_data_bar_plot.js"></script>
+        <script src="/static/js/mined_value_by_block_data_bar_plot.js"></script>
+        <script src="/static/js/mined_blocks_data_bar_plot.js"></script>
+        <script src="/static/js/crypto_predictions_line_plot.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            
+            {% block topbar %} 
+            {% endblock %} 
+
+            {% block leftbar %} 
+            {% endblock %} 
+
+            {% block content %} 
+            {% endblock %} 
+
+        </div>
+    </body>
+</html>

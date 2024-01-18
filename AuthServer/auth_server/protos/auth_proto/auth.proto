@@ -1,0 +1,81 @@
+syntax = "proto3";
+package authentication;
+
+service Authentication {
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc UpdateProfilePicture(UpdateProfilePictureRequest) returns (UpdateProfilePictureResponse);
+}
+
+message UpdateProfilePictureRequest {
+  int32 id = 1;
+  string encoded_profile_picture = 2;
+}
+
+message UpdateProfilePictureResponse {
+  string message = 1;
+}
+
+message UpdateUserRequest {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  string wallet_security_stamp = 4;
+}
+
+message UpdateUserResponse {
+  string message = 1;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
+
+message GetUserResponse {
+  string username = 1;
+  string email = 2;
+  string encoded_profile_picture = 3;
+  string wallet_security_stamp = 4;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password1 = 3;
+  string password2 = 4;
+}
+
+message RegisterResponse {
+  string message = 1;
+}
+
+message RequestPasswordResetRequest {
+  string email = 1;
+}
+
+message RequestPasswordResetResponse {
+  string message = 1;
+}
+
+message ResetPasswordRequest {
+  string token = 1;
+  string new_password = 2;
+}
+
+message ResetPasswordResponse {
+  string message = 1;
+}
+
